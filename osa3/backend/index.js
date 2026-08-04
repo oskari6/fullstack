@@ -22,9 +22,9 @@ app.get("/api/persons", (request, response) => {
 app.get("/api/persons/:id", (request, response) => {
   Person.findById(request.params.id).then((person) => {
     if (!person) {
-      response.status(404).end();
+      return response.status(404).end();
     } else {
-      response.json(person);
+      return response.json(person);
     }
   });
 });
@@ -35,9 +35,9 @@ app.post("/api/persons", (request, response) => {
 
   person.save().then((result) => {
     if (!result) {
-      response.status(500).msg("failed to create person").end();
+      return response.status(500).msg("failed to create person").end();
     } else {
-      response.status(201).json(result);
+      return response.status(201).json(result);
     }
   });
 });
@@ -50,16 +50,16 @@ app.put("/api/persons/:id", (request, response) => {
 
   Person.findById(request.params.id).then((person) => {
     if (!person) {
-      response.status(404).end();
+      return response.status(404).end();
     } else {
       person.name = updatedPerson.name;
       person.number = updatedPerson.number;
 
       person.save().then((result) => {
         if (!result) {
-          response.status(500).msg("failed to update person").end();
+          return response.status(500).msg("failed to update person").end();
         } else {
-          response.status(200).json(result);
+          return response.status(200).json(result);
         }
       });
     }
@@ -69,16 +69,16 @@ app.put("/api/persons/:id", (request, response) => {
 app.delete("/api/persons/:id", (request, response) => {
   Person.findOneAndDelete(request.params.id)
     .then(() => {
-      response.status(203).end();
+      return response.status(203).end();
     })
     .catch((error) => {
-      response.status(500).json("Deleting failed:", error);
+      return response.status(500).json("Deleting failed:", error);
     });
 });
 
 app.get("/info", async (request, response) => {
   const persons = await Person.find();
-  response.send(`
+  return response.send(`
     <p>Phonebook has info for ${persons.length} people</p>
     <p>${new Date()}</p>
   `);

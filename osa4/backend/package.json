@@ -9,7 +9,7 @@
   "scripts": {
     "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development node --watch index.js",
-    "test": "NODE_ENV=test node --test",
+    "test": "NODE_ENV=test node --test --test-concurrency=1",
     "build:ui": "rm -rf dist && cd ../frontend/ && npm run build && cp -r dist ../backend",
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
@@ -17,9 +17,11 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.3.1",
     "eslint": "^10.0.3",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.3.0",
     "morgan": "^1.10.1"
   },

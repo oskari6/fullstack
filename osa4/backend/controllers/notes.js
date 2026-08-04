@@ -1,5 +1,7 @@
 const notesRouter = require("express").Router();
 const Note = require("../models/note");
+const User = require("../models/user");
+const jwt = require("jsonwebtoken");
 
 notesRouter.get("/", async (request, response) => {
   const notes = await Note.find({});
@@ -11,25 +13,25 @@ notesRouter.get("/:id", async (request, response) => {
   if (note) {
     response.json(note);
   } else {
-    response.status(404).end();
+    return response.status(404).end();
   }
 });
 
 notesRouter.post("/", async (request, response) => {
   const body = request.body;
-
   const note = new Note({
     content: body.content,
     important: body.important || false,
   });
 
   const savedNote = await note.save();
-  response.status(201).json(savedNote);
+
+  return response.status(201).json(savedNote);
 });
 
 notesRouter.delete("/:id", async (request, response) => {
   await Note.findByIdAndDelete(request.params.id);
-  response.status(204).end();
+  return response.status(204).end();
 });
 
 notesRouter.put("/:id", (request, response, next) => {

@@ -1,5 +1,7 @@
 const Note = require("../models/note");
 const Blog = require("../models/blog");
+const User = require("../models/user");
+const mongoose = require("mongoose");
 
 const initialNotes = [
   {
@@ -12,18 +14,24 @@ const initialNotes = [
   },
 ];
 
+const initialUsers = [
+  { username: "test2", name: "test2", passwordHash: "123", blogs: [] },
+];
+
 const initialBlogs = [
   {
     title: "test",
     author: "tester",
     url: "localhost",
     likes: 1,
+    creator: new mongoose.Types.ObjectId(),
   },
   {
     title: "test",
     author: "tester",
     url: "localhost",
     likes: 1,
+    creator: new mongoose.Types.ObjectId(),
   },
 ];
 
@@ -45,10 +53,17 @@ const blogsInDb = async () => {
   return blogs.map((blog) => blog.toJSON());
 };
 
+const usersInDb = async () => {
+  const users = await User.find({});
+  return users.map((u) => u.toJSON());
+};
+
 module.exports = {
   initialNotes,
   initialBlogs,
+  initialUsers,
   nonExistingId,
   notesInDb,
   blogsInDb,
+  usersInDb,
 };
