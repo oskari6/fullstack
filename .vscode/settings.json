@@ -4,5 +4,8 @@
     "source.fixAll": "explicit",
     "source.addMissingImports": "explicit",
     "source.fixAll.eslint": "explicit"
+  },
+  "search.exclude": {
+    "**/package-lock.json": true
   }
 }
