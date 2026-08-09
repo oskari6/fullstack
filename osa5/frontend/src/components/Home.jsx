@@ -1,7 +1,7 @@
 export const Home = () => {
   return (
     <>
-      <h1>Blog app</h1>
+      <h1>home</h1>
       <div>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ;

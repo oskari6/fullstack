@@ -7,12 +7,6 @@ import { BlogForm } from "../BlogForm";
 
 describe("blog form unitests", () => {
   test("filling form sends right object", async () => {
-    const blog = {
-      title: "title",
-      author: "author",
-      url: "localhost",
-    };
-
     const user = userEvent.setup();
     const createMock = vi.spyOn(blogService, "create").mockResolvedValue({
       title: "test-title",
@@ -22,7 +16,7 @@ describe("blog form unitests", () => {
 
     render(
       <MemoryRouter>
-        <BlogForm blog={blog} />
+        <BlogForm onCreate={() => {}} />
       </MemoryRouter>,
     );
 

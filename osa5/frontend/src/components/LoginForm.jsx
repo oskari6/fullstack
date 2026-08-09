@@ -1,3 +1,4 @@
+import { Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Logout } from "../components/Logout";
@@ -54,28 +55,29 @@ export const LoginForm = ({ setUser }) => {
       ) : (
         <>
           <h2>Login</h2>
-          <form>
-            <div>
-              <label>
-                username
-                <input
-                  type="text"
-                  value={username}
-                  onChange={({ target }) => setUsername(target.value)}
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                password
-                <input
-                  type="password"
-                  value={password}
-                  onChange={({ target }) => setPassword(target.value)}
-                />
-              </label>
-            </div>
-            <button onClick={handleLogin}>login</button>
+          <form
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              width: 150,
+              gap: 2,
+            }}
+          >
+            <TextField
+              label="username"
+              type="text"
+              value={username}
+              onChange={({ target }) => setUsername(target.value)}
+            />
+            <TextField
+              label="password"
+              type="password"
+              value={password}
+              onChange={({ target }) => setPassword(target.value)}
+            />
+            <Button style={{ backgroundColor: "blue" }} onClick={handleLogin}>
+              login
+            </Button>
           </form>
         </>
       )}

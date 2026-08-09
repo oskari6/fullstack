@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 export const Logout = ({ setUser }) => {
@@ -12,9 +13,9 @@ export const Logout = ({ setUser }) => {
 
   return (
     <p style={{ padding: 5 }}>
-      <button type="button" onClick={handleLogout}>
+      <Button type="button" onClick={handleLogout}>
         logout
-      </button>
+      </Button>
     </p>
   );
 };

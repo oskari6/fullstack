@@ -1,14 +1,14 @@
+import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import blogService from "../services/blogs";
-
 const initialState = {
   title: "",
   author: "",
   url: "",
 };
 
-export const BlogForm = () => {
+export const BlogForm = ({ onCreate }) => {
   const [formData, setFormData] = useState(initialState);
   const [formVisible, setFormVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -25,10 +25,11 @@ export const BlogForm = () => {
     event.preventDefault();
     resetMsg();
     try {
-      await blogService.create(formData);
+      const createdBlog = await blogService.create(formData);
       setFormVisible(false);
       setFormData(initialState);
       navigate("/blogs");
+      onCreate(createdBlog);
     } catch {
       setErrorMessage("creating blog failed");
     }
@@ -49,63 +50,51 @@ export const BlogForm = () => {
             gap: 2,
           }}
         >
-          <label
-            style={{
-              display: "flex",
-            }}
+          <TextField
+            label="title"
+            value={formData.title}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                title: e.target.value,
+              }))
+            }
+          />
+          <TextField
+            label="author"
+            value={formData.author}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                author: e.target.value,
+              }))
+            }
+          />
+          <TextField
+            label="url"
+            value={formData.url}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                url: e.target.value,
+              }))
+            }
+          />
+          <Button
+            onClick={handleCreateBlog}
+            variant="contained"
+            style={{ marginTop: 10 }}
           >
-            title
-            <input
-              value={formData.title}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  title: e.target.value,
-                }))
-              }
-            />
-          </label>
-          <label
-            style={{
-              display: "flex",
-            }}
-          >
-            author
-            <input
-              value={formData.author}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  author: e.target.value,
-                }))
-              }
-            />
-          </label>
-          <label
-            style={{
-              display: "flex",
-            }}
-          >
-            url
-            <input
-              value={formData.url}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  url: e.target.value,
-                }))
-              }
-            />
-          </label>
-          <button onClick={handleCreateBlog}>create</button>
-          <button onClick={() => setFormVisible(false)} type="button">
+            create
+          </Button>
+          <Button onClick={() => setFormVisible(false)} type="button">
             cancel
-          </button>
+          </Button>
         </form>
       ) : (
-        <button type="button" onClick={() => setFormVisible(true)}>
+        <Button type="button" onClick={() => setFormVisible(true)}>
           create new blog
-        </button>
+        </Button>
       )}
     </>
   );
