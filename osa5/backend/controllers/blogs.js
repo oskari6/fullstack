@@ -12,6 +12,26 @@ blogsRouter.get("/", async (request, response) => {
   response.json(blogs);
 });
 
+blogsRouter.get("/:id", async (request, response) => {
+  const blog = await Blog.findById(request.params.id);
+  if (blog) {
+    const user = await User.findById(blog.creator);
+    if (!user) {
+      return response.status(400).json("user not found");
+    }
+    return response.status(200).json({
+      ...blog.toJSON(),
+      creator: {
+        id: user._id,
+        name: user.name,
+        username: user.username,
+      },
+    });
+  } else {
+    return response.status(404).end();
+  }
+});
+
 blogsRouter.post("/", middleware.userExtractor, async (request, response) => {
   const body = request.body;
 
@@ -35,44 +55,72 @@ blogsRouter.post("/", middleware.userExtractor, async (request, response) => {
   user.blogs = user.blogs.concat(savedBlog._id);
   await user.save();
 
-  return response.status(201).json(savedBlog);
+  return response.status(201).json({
+    ...savedBlog.toJSON(),
+    creator: {
+      id: user._id,
+      name: user.name,
+      username: user.username,
+    },
+  });
 });
 
-blogsRouter.put("/:id", async (request, response, next) => {
-  const { title, author, url, likes } = request.body;
+blogsRouter.put(
+  "/:id",
+  middleware.userExtractor,
+  async (request, response, next) => {
+    const { title, author, url, likes } = request.body;
 
-  const foundBlog = await Blog.findById(request.params.id);
-  if (!foundBlog) {
-    return response.status(404).json("Blog not found").end();
-  }
+    const foundBlog = await Blog.findById(request.params.id);
+    if (!foundBlog) {
+      return response.status(404).json("Blog not found").end();
+    }
 
-  foundBlog.title = title;
-  foundBlog.author = author;
-  foundBlog.url = url;
-  foundBlog.likes = likes;
+    foundBlog.title = title;
+    foundBlog.author = author;
+    foundBlog.url = url;
+    foundBlog.likes = likes;
 
-  const updatedBlog = await foundBlog.save();
-  if (!updatedBlog) {
-    return response.status(500).json("Updating blog failed").end();
-  }
-  return response.status(200).json(foundBlog);
-});
+    const updatedBlog = await foundBlog.save();
+    if (!updatedBlog) {
+      return response.status(500).json("Updating blog failed").end();
+    }
+    console.log(request.user);
+    const user = await User.findById(request.user);
+    if (!user) {
+      return response.status(400).json("user not found");
+    }
 
-blogsRouter.delete("/:id", async (request, response) => {
-  const foundBlog = await Blog.findById(request.params.id);
-  if (!foundBlog) {
-    return response.status(404).json("Blog not found").end();
-  }
+    return response.status(200).json({
+      ...updatedBlog.toJSON(),
+      creator: {
+        id: user._id,
+        name: user.name,
+        username: user.username,
+      },
+    });
+  },
+);
 
-  if (foundBlog.creator.toString() !== request.user.toString()) {
-    return response
-      .status(400)
-      .json("Unauhtorized user can't delete token")
-      .end();
-  }
+blogsRouter.delete(
+  "/:id",
+  middleware.userExtractor,
+  async (request, response) => {
+    const foundBlog = await Blog.findById(request.params.id);
+    if (!foundBlog) {
+      return response.status(404).json("Blog not found").end();
+    }
 
-  await Blog.findByIdAndDelete(request.params.id);
-  return response.status(204).end();
-});
+    if (!foundBlog.creator.equals(request.user)) {
+      return response
+        .status(400)
+        .json("Unauhtorized user can't delete token")
+        .end();
+    }
+
+    await Blog.findByIdAndDelete(request.params.id);
+    return response.status(204).end();
+  },
+);
 
 module.exports = blogsRouter;
