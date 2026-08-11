@@ -45,7 +45,14 @@ export const useAnecdoteStore = create(
           votes: anecdote.votes + 1,
         });
         set((state) => ({
-          anecdotes: state.anecdotes.map((n) => (n.id === id ? updated : n)),
+          anecdotes: state.anecdotes.map((n) =>
+            n.id === id
+              ? {
+                  ...updated,
+                  creator: n.creator,
+                }
+              : n,
+          ),
         }));
       },
       remove: async (id) => {
