@@ -42,9 +42,9 @@ export const BlogForm = () => {
                         gap: 2
                     }}
                 >
-                    <TextField {...title.input} />
-                    <TextField {...title.author} />
-                    <TextField {...title.rl} />
+                    <TextField placeholder="title" {...title.input} />
+                    <TextField placeholder="author" {...title.author} />
+                    <TextField placeholder="url" {...title.url} />
                     <Button onClick={handleCreateBlog} variant="contained" style={{ marginTop: 10 }}>
                         create
                     </Button>

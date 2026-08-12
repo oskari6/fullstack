@@ -10,7 +10,7 @@ export const LoginForm = () => {
     const { create: createAuth } = useAuthActions();
     const { username: storedUsername, name: storedName } = useAuth();
     const username = useField("text");
-    const password = useField("text");
+    const password = useField("password");
     const navigate = useNavigate();
 
     const handleLogin = async (event) => {
@@ -43,8 +43,8 @@ export const LoginForm = () => {
                             gap: 2
                         }}
                     >
-                        <TextField {...username.input} />
-                        <TextField {...password.input} />
+                        <TextField placeholder="username" {...username.input} />
+                        <TextField placeholder="password" {...password.input} />
                         <Button style={{ backgroundColor: "blue" }} onClick={handleLogin}>
                             login
                         </Button>

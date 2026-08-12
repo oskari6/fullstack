@@ -10,6 +10,8 @@ import { LoginForm } from "./components/LoginForm";
 import { Logout } from "./components/Logout";
 import { NotFound } from "./components/NotFound";
 import Notification from "./components/Notification";
+import { User } from "./components/User";
+import { UserList } from "./components/UserList";
 import { useAuth, useBlogActions } from "./store";
 
 const App = () => {
@@ -30,15 +32,20 @@ const App = () => {
                             <Button color="inherit" component={Link} to="/">
                                 home
                             </Button>
+                            <Button color="inherit" component={Link} to="/users">
+                                users
+                            </Button>
                             <Button color="inherit" component={Link} to="/blogs">
                                 blogs
                             </Button>
                             <Button color="inherit" component={Link} to="/create">
                                 new blog
                             </Button>
-                            <Button color="inherit" component={Link} to="/login">
-                                login
-                            </Button>
+                            {!username && (
+                                <Button color="inherit" component={Link} to="/login">
+                                    login
+                                </Button>
+                            )}
                             {username && <Logout />}
                         </Box>
                     </Toolbar>
@@ -49,7 +56,9 @@ const App = () => {
                 <ErrorBoundary>
                     <Routes>
                         <Route path="*" element={<NotFound />} />
+                        <Route path="/users/:id" element={<User />} />
                         <Route path="/blogs/:id" element={<Blog />} />
+                        <Route path="/users" element={<UserList />} />
                         <Route path="/blogs" element={<BlogList />} />
                         <Route path="/create" element={username ? <BlogForm /> : <Navigate replace to="/login" />} />
                         <Route path="/login" element={<LoginForm />} />

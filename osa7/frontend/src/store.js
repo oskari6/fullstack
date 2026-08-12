@@ -23,7 +23,6 @@ const useAuthStore = create(
                 set(() => ({ token }));
                 set(() => ({ username }));
                 saveUser({ name, token, username });
-                blogService.setToken(token);
             },
             reset: async () => {
                 set(() => ({ name: "" }));
@@ -66,12 +65,8 @@ export const useBlogStore = create(
                 const blogs = await blogService.getAll();
                 set(() => ({ blogs: sortByLikes(blogs) }));
             },
-            update: async (id) => {
-                const blog = useBlogStore.getState().blogs.find((n) => n.id === id);
-                const updated = await blogService.update({
-                    ...blog,
-                    likes: blog.likes + 1
-                });
+            update: async (id, updatedBlog) => {
+                const updated = await blogService.update(updatedBlog);
                 set((state) => ({
                     blogs: sortByLikes(
                         state.blogs.map((n) =>

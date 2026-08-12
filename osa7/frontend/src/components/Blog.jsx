@@ -1,11 +1,13 @@
-import { Box, Button, Container } from "@mui/material";
+import { Box, Button, Container, TextField } from "@mui/material";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useField } from "../hooks/useField";
 import { useAuth, useBlog, useBlogActions, useNotificationActions } from "../store";
 
 export const Blog = () => {
     const id = useParams().id;
     const blog = useBlog(id);
+    const comment = useField("text");
 
     const { create } = useNotificationActions();
     const { update, remove } = useBlogActions();
@@ -17,9 +19,17 @@ export const Blog = () => {
 
     const handleLikeBlog = async () => {
         try {
-            await update(id);
+            await update(id, { ...blog, likes: blog.likes + 1 });
         } catch {
             create("liking blog failed", "error");
+        }
+    };
+
+    const handleComment = async () => {
+        try {
+            await update(id, { ...blog, comments: [...blog.comments, comment.input.value] });
+        } catch {
+            create("commenting blog failed", "error");
         }
     };
 
@@ -88,6 +98,23 @@ export const Blog = () => {
                                     </Button>
                                 )}
                             </span>
+                            <Box sx={{ mt: 2 }}>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        gap: 1,
+                                        alignItems: "center",
+                                        mb: 2
+                                    }}
+                                >
+                                    <TextField placeholder="Add a comment" size="small" {...comment.input} />
+
+                                    <Button variant="contained" onClick={handleComment} sx={{ whiteSpace: "nowrap" }}>
+                                        Add comment
+                                    </Button>
+                                </Box>
+                                <ul>{blog.comments.length > 0 && blog.comments.map((c) => <li>{c}</li>)}</ul>
+                            </Box>
                         </>
                     )}
                     <Button

@@ -13,10 +13,8 @@ export const Logout = () => {
     };
 
     return (
-        <p style={{ padding: 5 }}>
-            <Button type="button" onClick={handleLogout}>
-                logout
-            </Button>
-        </p>
+        <Button color="inherit" type="button" onClick={handleLogout}>
+            logout
+        </Button>
     );
 };
