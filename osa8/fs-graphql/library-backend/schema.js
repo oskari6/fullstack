@@ -15,6 +15,7 @@ const typeDefs = `
 
   type Token {
     value: String!
+    favoriteGenre: String
   }
 
   type Author {

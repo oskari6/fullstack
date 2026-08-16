@@ -22,7 +22,11 @@ const resolvers = {
         books = books.filter((b) => b.author === author);
       }
       if (genre) {
-        return await Book.find({ genres: genre });
+        return await Book.find({ genres: genre }).populate("author", {
+          name: 1,
+          born: 1,
+          id: 1,
+        });
       }
       return books;
     },
@@ -163,7 +167,10 @@ const resolvers = {
         id: user._id,
       };
 
-      return { value: jwt.sign(userForToken, process.env.JWT_SECRET) };
+      return {
+        value: jwt.sign(userForToken, process.env.JWT_SECRET),
+        favoriteGenre: user.favoriteGenre,
+      };
     },
 
     _resetDatabase: async () => {
