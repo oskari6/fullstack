@@ -19,7 +19,7 @@ const App = () => {
   useSubscription(BOOK_ADDED, {
     onData: ({ data }) => {
       const addedBook = data.data.bookAdded;
-      setMessage(`${addedBook.title} added`);
+      setMessage(`New book was just added`);
       addBookToCache(client.cache, addedBook);
     },
   });
