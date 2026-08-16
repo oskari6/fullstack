@@ -3,7 +3,7 @@ const typeDefs = `
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
-    allAuthors: [Author!]!
+    allAuthors: [AuthorLite!]!
     me: User
   }
 
@@ -18,22 +18,24 @@ const typeDefs = `
     favoriteGenre: String
   }
 
-  type Author {
+  type AuthorLite {
     id: ID!
     name: String!
     born: Int
     bookCount: Int!
   }
 
-  type AuthorLite {
+  type Author {
+    id: ID!
     name: String!
     born: Int
+    books: [String!]!
   }
 
   type Book {
     title: String!
     published: Int!
-    author: AuthorLite!
+    author: Author!
     genres: [String!]!
     id: ID!
   }
@@ -62,7 +64,11 @@ const typeDefs = `
     ): Token
 
     _resetDatabase: Boolean
-}
+  }
+
+  type Subscription {
+    bookAdded: Book!
+  }
 `;
 
 module.exports = typeDefs;
