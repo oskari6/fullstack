@@ -47,24 +47,30 @@ interface Params {
   target: number;
 }
 
-app.post("/exercises", (req: Request, res: Response<ExerciseApiResponse>) => {
-  const { daily_exercises, target }: Params = req.body;
+app.post(
+  "/exercises",
+  (
+    req: Request<Record<string, never>, ExerciseApiResponse, Params>,
+    res: Response<ExerciseApiResponse>,
+  ) => {
+    const { daily_exercises, target }: Params = req.body;
 
-  if (!daily_exercises || !target) {
-    return res.status(400).json({
-      error: "parameters missing",
-    });
-  }
+    if (!daily_exercises || !target) {
+      return res.status(400).json({
+        error: "parameters missing",
+      });
+    }
 
-  if (isNaN(target) || daily_exercises.some((e) => isNaN(e))) {
-    return res.status(400).json({
-      error: "malformatted parameters",
-    });
-  }
+    if (isNaN(target) || daily_exercises.some((e) => isNaN(e))) {
+      return res.status(400).json({
+        error: "malformatted parameters",
+      });
+    }
 
-  const result = calculateExercises(daily_exercises, target);
-  return res.json(result);
-});
+    const result = calculateExercises(daily_exercises, target);
+    return res.json(result);
+  },
+);
 
 const PORT = 3000;
 
