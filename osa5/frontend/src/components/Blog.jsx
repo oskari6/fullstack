@@ -56,7 +56,7 @@ export const Blog = () => {
   if (!blog) {
     return null;
   }
-  console.log(blog.creator);
+
   const isOwned = loggedInUserJSON
     ? blog.creator?.username === JSON.parse(loggedInUserJSON).username
     : false;

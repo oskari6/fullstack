@@ -7,7 +7,7 @@ import express, {
 import z from "zod";
 import diagnoses from "./data/diagnoses.ts";
 import patients from "./data/patients.ts";
-import { newPatientParser } from "./parser.ts";
+import { newPatientParser, parseEntry } from "./parser.ts";
 import * as dataService from "./service.ts";
 import type { NewPatient } from "./types.ts";
 import {
@@ -35,14 +35,40 @@ router.get("/api/ping", (_req, res) => {
   res.send("pong");
 });
 
+router.get("/api/patients/:id", (req, res: Response<PatientApiResponse>) => {
+  const patient = patients.find((p) => p.id === req.params.id);
+  if (!patient) {
+    return res.status(404).json({ error: "patient not found" });
+  }
+  return res.status(200).json(patient);
+});
+
 router.get("/api/patients", (_req, res: Response<PatientsApiResponse>) => {
   return res
     .status(200)
     .json(patients.map(({ ssn: _ssn, ...patients }) => patients));
 });
+
 router.get("/api/diagnoses", (_req, res: Response<DiagnosesApiResponse>) => {
   return res.status(200).json(diagnoses);
 });
+
+router.post(
+  "/api/patients/:id/entries",
+  (req: Request<{ id: string }>, res: Response) => {
+    try {
+      const parsedEntry = parseEntry(req.body);
+      const addedEntry = dataService.addEntry(parsedEntry, req.params.id);
+      return res.status(200).json(addedEntry);
+    } catch (error: unknown) {
+      let errorMessage = "Something went wrong.";
+      if (error instanceof Error) {
+        errorMessage += " Error: " + error.message;
+      }
+      return res.status(400).send({ error: errorMessage });
+    }
+  },
+);
 
 router.post(
   "/api/patients",
