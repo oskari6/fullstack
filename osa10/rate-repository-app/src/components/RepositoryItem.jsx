@@ -1,18 +1,20 @@
 import { Image, Linking, Pressable, View } from "react-native";
-import { useNavigate } from "react-router-native";
 import { ReviewList } from "./ReviewList";
 import Text from "./Text";
 
-export const RepositoryItem = ({ repository, showDetails, onEndReach }) => {
-  const navigate = useNavigate();
-
+export const RepositoryItem = ({
+  onNavigate,
+  repository,
+  showDetails,
+  onEndReach,
+}) => {
   const formatCount = (count) => {
     return count >= 1000 ? `${(count / 1000).toFixed(1)}k` : count;
   };
 
   return (
     <>
-      <Pressable onPress={() => navigate(`/repository/${repository.id}`)}>
+      <Pressable onPress={onNavigate}>
         <View
           testID="repositoryItem"
           style={{ padding: 15, backgroundColor: "white" }}
