@@ -1,6 +1,9 @@
+import { useApolloClient } from "@apollo/client/react";
 import { useFormik } from "formik";
 import { Pressable, StyleSheet, TextInput, View } from "react-native";
+import { useNavigate } from "react-router-native";
 import * as yup from "yup";
+import { useSignIn } from "../hooks/useSignIn";
 import Text from "./Text";
 
 const initialValues = {
@@ -13,11 +16,7 @@ const validationSchema = yup.object().shape({
   password: yup.string().required("password is required"),
 });
 
-const SignIn = () => {
-  const onSubmit = () => {
-    console.log("ok");
-  };
-
+export const SignInContainer = ({ onSubmit }) => {
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -89,4 +88,23 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export const SignIn = () => {
+  const [signIn] = useSignIn();
+
+  const navigate = useNavigate();
+  const apolloClient = useApolloClient();
+
+  const onSubmit = async (values) => {
+    const { username, password } = values;
+
+    try {
+      await signIn({ username, password });
+      await apolloClient.resetStore();
+      navigate("/");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  return <SignInContainer onSubmit={onSubmit} />;
+};
