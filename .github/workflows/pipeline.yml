@@ -56,25 +56,25 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
 
-discord_notification:
-  name: Discord notification
-  needs: [deployment_pipeline, deploy, tag_release]
-  if: always()
-  runs-on: ubuntu-latest
+  discord_notification:
+    name: Discord notification
+    needs: [deployment_pipeline, deploy, tag_release]
+    if: always()
+    runs-on: ubuntu-latest
 
-  steps:
-    - name: Build failed
-      if: ${{ needs.deployment_pipeline.result == 'failure' }}
-      uses: sarisia/actions-status-discord@v1
-      with:
-        webhook: ${{ secrets.DISCORD_WEBHOOK }}
-        status: failure
-        title: "Build failed"
+    steps:
+      - name: Build failed
+        if: ${{ needs.deployment_pipeline.result == 'failure' }}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: failure
+          title: "Build failed"
 
-    - name: Deployment successful
-      if: ${{ needs.tag_release.result == 'success' }}
-      uses: sarisia/actions-status-discord@v1
-      with:
-        webhook: ${{ secrets.DISCORD_WEBHOOK }}
-        status: success
-        title: "Deployment successful"
+      - name: Deployment successful
+        if: ${{ needs.tag_release.result == 'success' }}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: success
+          title: "Deployment successful"
