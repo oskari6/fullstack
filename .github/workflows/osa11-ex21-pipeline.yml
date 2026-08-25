@@ -1,0 +1,120 @@
+name: Osa 11 exercise 21 Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
+jobs:
+  deployment_pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+      - name: Install backend dependencies
+        working-directory: ./osa3/backend
+        run: npm install
+
+      - name: Install frontend dependencies
+        working-directory: ./osa3/frontend
+        run: npm install
+
+      - name: Check backend style
+        working-directory: ./osa3/backend
+        run: npm run lint
+
+      - name: Check frontend style
+        working-directory: ./osa3/frontend
+        run: npm run lint
+
+      - name: Build backend
+        working-directory: ./osa3/backend
+        run: npm run build
+
+      - name: Build frontend
+        working-directory: ./osa3/frontend
+        run: npm run build
+
+      - name: Start backend
+        working-directory: ./osa3/backend
+        run: npm run dev > backend.log 2>&1 &
+
+      - name: Start frontend
+        working-directory: ./osa3/frontend
+        run: npm run dev -- --host 0.0.0.0 > frontend.log 2>&1 &
+
+      - name: Check backend health
+        run: |
+          curl --retry 10 \
+               --retry-delay 2 \
+               --retry-connrefused \
+               --fail \
+               http://localhost:3001
+
+      - name: Check frontend health
+        run: |
+          curl --retry 10 \
+               --retry-delay 2 \
+               --retry-connrefused \
+               --fail \
+               http://localhost:5173
+
+  deploy:
+    name: Deploy
+    needs: deployment_pipeline
+    if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, 'osa3') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to Fly.io
+        working-directory: ./osa3/backend
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_2 }}
+
+  tag_release:
+    needs: deploy
+    if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, 'osa3') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.75.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+
+  discord_notification:
+    name: Discord notification
+    needs: [deployment_pipeline, deploy, tag_release]
+    if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, 'osa3') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build failed
+        if: ${{ needs.deployment_pipeline.result == 'failure' }}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: failure
+          title: "Build failed"
+
+      - name: Deployment successful
+        if: ${{ needs.tag_release.result == 'success' }}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: success
+          title: "Deployment successful"
