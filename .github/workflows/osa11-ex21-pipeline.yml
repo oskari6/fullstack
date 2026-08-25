@@ -42,7 +42,7 @@ jobs:
 
       - name: Start frontend
         working-directory: ./osa3/frontend
-        run: npm run dev -- --host 0.0.0.0 > frontend.log 2>&1 &
+        run: npm start -- --host 0.0.0.0 > frontend.log 2>&1 &
 
       - name: Check backend health
         run: |
