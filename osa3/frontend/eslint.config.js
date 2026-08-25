@@ -1,4 +1,5 @@
 import js from "@eslint/js";
+import importPlugin from "eslint-plugin-import";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
@@ -10,8 +11,9 @@ export default defineConfig([
   {
     plugins: {
       react,
+      import: importPlugin,
     },
-    files: ["**/*.{js,jsx}"],
+    files: ["src/**/*.{js,jsx}"],
     extends: [
       js.configs.recommended,
       reactHooks.configs.flat.recommended,
@@ -26,6 +28,13 @@ export default defineConfig([
         sourceType: "module",
       },
     },
+
+    settings: {
+      "import/resolver": {
+        node: true,
+      },
+    },
+
     rules: {
       "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]" }],
       "import/no-unresolved": "error",
