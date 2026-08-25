@@ -32,13 +32,9 @@ jobs:
         working-directory: ./osa3/frontend
         run: npm run lint
 
-      - name: Build backend
+      - name: Build application
         working-directory: ./osa3/backend
-        run: npm run build
-
-      - name: Build frontend
-        working-directory: ./osa3/frontend
-        run: npm run build
+        run: npm run build:ui
 
       - name: Start backend
         working-directory: ./osa3/backend

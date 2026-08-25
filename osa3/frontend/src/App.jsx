@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Filter from "./Filter";
-import PersonForm from "./PersonForm";
-import Persons from "./Persons";
+import Filter from "./Filter.jsx";
+import PersonForm from "./PersonForm.jsx";
+import Persons from "./Persons.jsx";
 import {
   createPerson,
   deletePerson,
