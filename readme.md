@@ -4,4 +4,4 @@ osa11:
 pokedex: osa11/pokedex
 exercise 21: osa3/ projektista. osa11-ex21-pipeline.yml
 
-test comment for part3
+test comment for part3x
