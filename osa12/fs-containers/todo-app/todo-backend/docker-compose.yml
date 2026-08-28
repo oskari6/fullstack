@@ -1,0 +1,26 @@
+services:
+  mongo:
+    container_name: mongo
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: the_database
+
+  app:
+    container_name: todo-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      MONGO_URL: ${MONGO_URL}
+      REDIS_URL: ${REDIS_URL}
+
+volumes:
+  mongo_data:

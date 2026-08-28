@@ -1,0 +1,42 @@
+user1@INT-5CD3211N0L:~/fullstack/osa12/fs-containers/todo-app/todo-backend$ docker compose exec -it mongo mongosh -u the_username -p the_password --authenticationDatabase admin
+Current Mongosh Log ID: 6a91921738577ff4539df8a2
+Connecting to:          mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&authSource=admin&appName=mongosh+2.8.3
+Using MongoDB:          7.0.35
+Using Mongosh:          2.8.3
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2026-08-28T13:44:36.645+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2026-08-28T13:44:37.304+00:00: Soft rlimits for open file descriptors too low
+------
+
+test> show dbs
+admin         100.00 KiB
+config         60.00 KiB
+local          72.00 KiB
+the_database    8.00 KiB
+test> use the_database
+switched to db the_database
+the_database> show collections
+todos
+the_database> db.todos.find({})
+
+the_database> db.todos.insertOne({
+|   text: "Increase the number of tools in my tool belt",
+|   done: false
+| })
+{
+  acknowledged: true,
+  insertedId: ObjectId('6a91926438577ff4539df8a3')
+}
+the_database> db.todos.find({})
+[
+  {
+    _id: ObjectId('6a91926438577ff4539df8a3'),
+    text: 'Increase the number of tools in my tool belt',
+    done: false
+  }
+]
+the_database> 
