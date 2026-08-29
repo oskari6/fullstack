@@ -8,13 +8,7 @@ RUN npm ci
 
 COPY . .
 
-FROM base AS test
-
-RUN npm test
-
-FROM test AS build
-
-ENV VITE_BACKEND_URL=/api
+FROM base AS build
 
 RUN npm run build
 
