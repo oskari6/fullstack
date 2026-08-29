@@ -1,0 +1,21 @@
+# docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+services:
+  nginx:
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+
+  app:
+    volumes:
+      - ./todo-backend:/usr/src/app
+    build:
+      context: ./todo-backend
+      dockerfile: Dockerfile.dev
+
+  web:
+    build:
+      context: ./todo-frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./todo-frontend:/usr/src/app
+    # ports:
+    #   - 5173:5173

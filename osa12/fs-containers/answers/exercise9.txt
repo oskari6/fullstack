@@ -1,0 +1,11 @@
+user1@INT-5CD3211N0L:~/fullstack/osa12/fs-containers/todo-app/todo-backend$ docker compose exec -it redis redis-cli
+127.0.0.1:6379> KEYS *
+1) "added_todos"
+127.0.0.1:6379> GET added_todos
+"1"
+127.0.0.1:6379> GET added_todos
+"2"
+127.0.0.1:6379> DEL added_todos
+(integer) 1
+127.0.0.1:6379> GET added_todos
+"1"
