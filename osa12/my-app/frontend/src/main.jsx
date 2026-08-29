@@ -14,6 +14,8 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 
+const wsUrl = `ws://${window.location.host}/ws`;
+
 const authLink = new SetContextLink(({ headers }) => {
   const token = localStorage.getItem("user-token");
   return {
@@ -24,10 +26,10 @@ const authLink = new SetContextLink(({ headers }) => {
   };
 });
 
-const httpLink = new HttpLink({ uri: import.meta.env.APP_URL });
+const httpLink = new HttpLink({ uri: "/api" });
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: import.meta.env.WS_URL,
+    url: wsUrl,
   }),
 );
 

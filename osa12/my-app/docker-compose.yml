@@ -16,13 +16,12 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    environment:
-      APP_URL: /api
-      WS_URL: /ws
 
   app:
     container_name: backend
     image: backend
+    env_file:
+      - ./backend/.env
     build:
       context: ./backend
       dockerfile: Dockerfile
