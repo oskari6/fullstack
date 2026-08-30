@@ -49,7 +49,7 @@ blogsRouter.get("/:id", async (request, response) => {
 blogsRouter.post(
   "/",
   middleware.tokenExtractor,
-  middleware.userExtractor,
+  middleware.sessionExtractor,
   async (request, response) => {
     const body = request.body;
 
@@ -67,6 +67,7 @@ blogsRouter.post(
       url: body.url,
       likes: body.likes ?? 0,
       userId: user.id,
+      year: body.year,
     });
 
     return response.status(201).json(savedBlog);
@@ -81,10 +82,11 @@ blogsRouter.put("/:id", async (request, response, next) => {
     return response.status(404).json("Blog not found").end();
   }
 
-  foundBlog.title = title;
-  foundBlog.author = author;
-  foundBlog.url = url;
-  foundBlog.likes = likes;
+  if (title !== undefined) foundBlog.title = title;
+  if (author !== undefined) foundBlog.author = author;
+  if (url !== undefined) foundBlog.url = url;
+  if (likes !== undefined) foundBlog.likes = likes;
+  if (year !== undefined) foundBlog.year = year;
 
   const updatedBlog = await foundBlog.save();
   if (!updatedBlog) {
@@ -96,7 +98,7 @@ blogsRouter.put("/:id", async (request, response, next) => {
 blogsRouter.delete(
   "/:id",
   middleware.tokenExtractor,
-  middleware.userExtractor,
+  middleware.sessionExtractor,
   async (request, response) => {
     const foundBlog = await Blog.findByPk(request.params.id);
     if (!foundBlog) {

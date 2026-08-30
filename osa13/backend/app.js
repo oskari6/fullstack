@@ -4,13 +4,12 @@ const middleware = require("./utils/middleware");
 const blogsRouter = require("./controllers/blogs");
 const usersRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");
-const { connect } = require("./utils/db");
+const readingListsRouter = require("./controllers/reading_lists");
 const { Sequelize } = require("sequelize");
-const { Blog, User } = require("./models");
+const { Blog, User, ReadinListEntry, Session } = require("./models");
+const config = require("./utils/config");
 
 const app = express();
-
-connect();
 
 app.use(express.static("dist"));
 app.use(express.json());
@@ -20,6 +19,7 @@ app.use(middleware.tokenExtractor);
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
+app.use("/api/readinglists", readingListsRouter);
 app.get("/api/authors", async (request, response) => {
   const authors = await Blog.findAll({
     attributes: [
@@ -33,9 +33,11 @@ app.get("/api/authors", async (request, response) => {
 
   return response.json(authors);
 });
-app.post("api/reset", async (request, response) => {
+app.post("/api/reset", async (request, response) => {
   await Blog.destroy({ truncate: true, cascade: true });
   await User.destroy({ truncate: true, cascade: true });
+  await ReadinListEntry.destroy({ truncate: true, cascade: true });
+  await Session.destroy({ truncate: true, cascade: true });
   return response.status(204).end();
 });
 app.get("/", async (request, response) => {

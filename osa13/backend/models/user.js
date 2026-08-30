@@ -23,12 +23,22 @@ User.init(
         },
       },
     },
+    passwordHash: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
   },
   {
     sequelize,
     underscored: true,
     timestamps: true,
     modelName: "user",
+    defaultScope: {
+      attributes: { exclude: ["passwordHash"] },
+    },
+    scopes: {
+      withPassword: { attributes: { include: ["passwordHash"] } },
+    },
   },
 );
 

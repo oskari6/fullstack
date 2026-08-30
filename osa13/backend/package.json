@@ -14,7 +14,8 @@
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
     "logs:prod": "fly logs",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "migration:down": "node utils/rollback.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -24,7 +25,8 @@
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.10.1",
     "pg": "^8.23.0",
-    "sequelize": "^6.37.8"
+    "sequelize": "^6.37.8",
+    "umzug": "^3.8.3"
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.7.10",
