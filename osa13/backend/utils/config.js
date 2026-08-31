@@ -10,5 +10,6 @@ const databaseUrl = isTesting ? TEST_DATABASE_URL : POSTGRES_URI;
 
 module.exports = {
   POSTGRES_URI: databaseUrl,
-  PORT: PORT || 3001
+  PORT: PORT || 3001,
+  isTesting,
 };

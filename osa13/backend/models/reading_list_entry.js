@@ -1,7 +1,16 @@
 const { Model, DataTypes } = require("sequelize");
 const { sequelize } = require("../utils/db");
 
-class ReadingListEntry extends Model {}
+class ReadingListEntry extends Model {
+  toJSON() {
+    const values = { ...this.get() };
+    values.blog_id = values.blogId;
+    values.user_id = values.userId;
+    delete values.blogId;
+    delete values.userId;
+    return values;
+  }
+}
 ReadingListEntry.init(
   {
     id: {
@@ -28,7 +37,8 @@ ReadingListEntry.init(
     sequelize,
     underscored: true,
     timestamps: true,
-    modelName: "reading_list_entry",
+    modelName: "reading_list",
+    tableName: "reading_list_entries",
   },
 );
 

@@ -75,7 +75,7 @@ blogsRouter.post(
 );
 
 blogsRouter.put("/:id", async (request, response, next) => {
-  const { title, author, url, likes } = request.body;
+  const { title, author, url, likes, year } = request.body;
 
   const foundBlog = await Blog.findByPk(request.params.id);
   if (!foundBlog) {

@@ -1,12 +1,10 @@
-const blogsRouter = require("express").Router();
+const readingListsRouter = require("express").Router();
 const { Blog, ReadingListEntry } = require("../models");
 const { User } = require("../models");
 const middleware = require("../utils/middleware");
 
 readingListsRouter.post(
   "/",
-  middleware.tokenExtractor,
-  middleware.sessionExtractor,
   async (request, response) => {
     const body = request.body;
 
@@ -14,14 +12,20 @@ readingListsRouter.post(
       return response.status(400).json("blog or user id missing");
     }
 
-    const user = await User.findByPk(request.user);
+    const user = await User.findByPk(body.userId);
     if (!user) {
-      return response.status(400).json("no user found");
+      return response.status(404).json("no user found");
     }
 
     const foundBlog = await Blog.findByPk(body.blogId);
     if (!foundBlog) {
-      return response.status(400).json("no blog found");
+      return response.status(404).json("no blog found");
+    }
+    const existingEntry = await ReadingListEntry.findOne({
+      where: { blogId: body.blogId, userId: body.userId },
+    });
+    if (existingEntry) {
+      return response.status(400).json("blog is already in the reading list");
     }
     const savedReadingListEntry = await ReadingListEntry.create({
       blogId: body.blogId,
@@ -44,24 +48,28 @@ readingListsRouter.put(
       return response.status(400).json("no user found");
     }
 
-    const foundReadinListEntry = await ReadingListEntry.findByPk(
+    const foundReadingListEntry = await ReadingListEntry.findByPk(
       request.params.id,
     );
-    if (!foundReadinListEntry) {
+    if (!foundReadingListEntry) {
       return response.status(404).json("reading list item not found").end();
     }
 
-    if (read !== undefined) foundReadinListEntry.read = read;
+    if (foundReadingListEntry.userId !== user.id) {
+      return response.status(401).json("reading list item belongs to another user");
+    }
 
-    const updatedReadinListEntry = await foundReadinListEntry.save();
-    if (!updatedReadinListEntry) {
+    if (read !== undefined) foundReadingListEntry.read = read;
+
+    const updatedReadingListEntry = await foundReadingListEntry.save();
+    if (!updatedReadingListEntry) {
       return response
         .status(500)
         .json("Updating reading list item failed")
         .end();
     }
-    return response.status(200).json(updatedReadinListEntry);
+    return response.status(200).json(updatedReadingListEntry);
   },
 );
 
-module.exports = blogsRouter;
+module.exports = readingListsRouter;

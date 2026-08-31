@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const loginRouter = require("express").Router();
 const { User, Session } = require("../models");
+const middleware = require("../utils/middleware");
 
 loginRouter.post("/", async (request, response) => {
   const { username, password } = request.body;
@@ -31,7 +32,7 @@ loginRouter.post("/", async (request, response) => {
   const createdSession = await Session.create({
     userId: user.id,
     token,
-    expires: expiration,
+    expires: new Date(Date.now() + expiration * 1000),
   });
 
   response.status(200).send({
