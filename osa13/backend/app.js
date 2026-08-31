@@ -53,8 +53,8 @@ app.post("/api/reset", async (request, response) => {
   await User.destroy({ truncate: true, cascade: true });
   return response.status(204).end();
 });
-app.get("/", async (request, response) => {
-  return response.status(200);
+app.get("/", (request, response) => {
+  return response.sendStatus(200);
 });
 
 app.use(middleware.unknownEndpoint);
