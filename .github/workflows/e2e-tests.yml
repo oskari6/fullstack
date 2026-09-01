@@ -8,6 +8,11 @@ jobs:
   e2e-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      MONGO_INITDB_ROOT_USERNAME: the_username
+      MONGO_INITDB_ROOT_PASSWORD: the_password
+      MONGO_URL: mongodb://the_username:the_password@mongo:27017/the_database?authSource=admin
+      REDIS_URL: redis://redis
 
     steps:
       - name: Checkout code
