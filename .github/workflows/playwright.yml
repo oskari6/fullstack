@@ -27,6 +27,7 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Set up environment file
+        working-directory: ./osa14/blogs-app
         run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env.test
           echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> .env.test
