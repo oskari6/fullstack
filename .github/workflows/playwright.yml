@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Install Playwright Browsers
-        working-directory: ./osa14/next-js-tests
+        working-directory: ./osa14/blogs-app
         run: npx playwright install --with-deps chromium
 
       - name: Set up environment file
