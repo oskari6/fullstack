@@ -58,7 +58,7 @@ export const NewBlogForm = () => {
       </div>
       <div>
         <label>
-          Url
+          URL
           <input
             className="bg-gray-200 border-1"
             type="text"

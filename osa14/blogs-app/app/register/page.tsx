@@ -27,7 +27,7 @@ export default function RegisterPage() {
               defaultValue={state.username}
             />
           </label>
-          {state.error && state.error.includes("username") && (
+          {state.error && state.error.toLowerCase().includes("username") && (
             <p data-testid="username-error" style={{ color: "red" }}>
               {state.error}
             </p>
@@ -64,7 +64,7 @@ export default function RegisterPage() {
         </div>
         <div>
           <label>
-            Confirm password
+            Confirm Password
             <input
               className="bg-gray-200 border-1"
               type="password"
@@ -80,7 +80,7 @@ export default function RegisterPage() {
           )}
         </div>
         <button
-          data-testi="register-button"
+          data-testid="register-button"
           className="bg-blue-200 border-1"
           type="submit"
         >

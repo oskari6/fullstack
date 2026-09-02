@@ -30,11 +30,11 @@ export default function MeClient({ user }: Props) {
   return (
     <div className="w-full flex items-center justify-center">
       <div className="shadow-md rounded-sm p-4 w-xl mt-10">
-        <div>
+        <div data-testid="user-profile">
           <h2 className="font-bold mb-5">My Profile</h2>
           <p>
             <span className="font-bold">Name: </span>
-            <span>{user.name}</span>
+            <span data-testid="user-name">{user.name}</span>
           </p>
           <p>
             <span className="font-bold">Username: </span>
@@ -53,6 +53,7 @@ export default function MeClient({ user }: Props) {
                     {rle.blog.title} - {rle.blog.author}
                   </span>
                   <button
+                    data-testid={`mark-read-${rle.id}`}
                     onClick={() => markAsRead(rle.id)}
                     className="ml-2 bg-green-500 p-2 rounded text-white"
                   >

@@ -15,7 +15,7 @@ const UserPage = async ({
   }
 
   return (
-    <div data-testid="user-profile">
+    <div>
       <h2 data-testid="user-name">{user.name}</h2>
       <p data-testid="user-username">Username: {user.username}</p>
       <h3>Blogs</h3>
