@@ -28,13 +28,7 @@ export default defineConfig({
   webServer: {
     command: "npm run dev",
     url: baseURL,
-    reuseExistingServer: true,
+    reuseExistingServer: process.env.NODE_ENV !== "test",
     timeout: 120_000,
-    env: {
-      ...process.env,
-      DATABASE_URL: process.env.DATABASE_URL!,
-      NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET!,
-      NEXTAUTH_URL: process.env.NEXTAUTH_URL!,
-    },
   },
 });

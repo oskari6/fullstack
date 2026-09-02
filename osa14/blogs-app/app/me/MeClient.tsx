@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { markAsRead } from "../actions/readingList";
 import { generateToken } from "../actions/users";
 
@@ -26,6 +27,12 @@ interface Props {
 export default function MeClient({ user }: Props) {
   const readBlogs = user.readingListEntries.filter((rle) => rle.read);
   const unreadBlogs = user.readingListEntries.filter((rle) => !rle.read);
+  const [token, setToken] = useState(user.token);
+
+  const handleGenerateToken = async () => {
+    const newToken = await generateToken(user.id);
+    setToken(newToken);
+  };
 
   return (
     <div className="w-full flex items-center justify-center">
@@ -90,27 +97,25 @@ export default function MeClient({ user }: Props) {
           <div className="bg-gray-200 p-2">
             <p className="text-gray-500">Current token:</p>
             <div data-testid="api-token" className="p-2 bg-gray-100">
-              {user.token ? (
+              {token ? (
                 <span
                   data-testid="token-display"
                   className="inline-block max-w-lg truncate align-bottom"
                 >
-                  {user.token}
+                  {token}
                 </span>
               ) : (
                 <span data-testid="no-token-message">No token generated</span>
               )}
             </div>
           </div>
-          <form action={() => generateToken(user.id)}>
-            <button
-              data-testid="generate-token-button"
-              type="submit"
-              className="bg-blue-500 p-2 rounded text-white mt-2"
-            >
-              Generate New Token
-            </button>
-          </form>
+          <button
+            onClick={handleGenerateToken}
+            data-testid="generate-token-button"
+            className="bg-blue-500 p-2 rounded text-white mt-2"
+          >
+            Generate New Token
+          </button>
         </div>
       </div>
     </div>
