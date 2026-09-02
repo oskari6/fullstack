@@ -52,6 +52,8 @@ jobs:
           fi
 
       - name: Run database migrations
+        env:
+          NODE_ENV: test
         working-directory: ./osa14/blogs-app
         run: npx drizzle-kit push
 
