@@ -1,6 +1,10 @@
 import { defineConfig, devices } from "@playwright/test";
+import * as dotenv from "dotenv";
 
 const baseURL = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+if (process.env.NODE_ENV === "test") {
+  dotenv.config({ path: ".env.test" });
+}
 
 export default defineConfig({
   testDir: "./tests",
