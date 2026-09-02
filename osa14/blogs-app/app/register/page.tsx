@@ -27,6 +27,11 @@ export default function RegisterPage() {
               defaultValue={state.username}
             />
           </label>
+          {state.error && state.error.includes("username") && (
+            <p data-testid="username-error" style={{ color: "red" }}>
+              {state.error}
+            </p>
+          )}
         </div>
         <div>
           <label>
@@ -51,6 +56,11 @@ export default function RegisterPage() {
               defaultValue={state.password}
             />
           </label>
+          {state.error && state.error.includes("Password must") && (
+            <p data-testid="password-error" style={{ color: "red" }}>
+              {state.error}
+            </p>
+          )}
         </div>
         <div>
           <label>
@@ -63,11 +73,19 @@ export default function RegisterPage() {
               defaultValue={state.passwordConfirm}
             />
           </label>
+          {state.error && state.error.includes("Passwords") && (
+            <p data-testid="passwordConfirm-error" style={{ color: "red" }}>
+              {state.error}
+            </p>
+          )}
         </div>
-        <button className="bg-blue-200 border-1" type="submit">
+        <button
+          data-testi="register-button"
+          className="bg-blue-200 border-1"
+          type="submit"
+        >
           Register
         </button>
-        {state.error && <p style={{ color: "red" }}>{state.error}</p>}
       </form>
     </div>
   );

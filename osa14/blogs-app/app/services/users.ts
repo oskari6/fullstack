@@ -18,3 +18,10 @@ export const getUserWithBlogs = async (username: string) => {
     with: { blogs: true },
   });
 };
+
+export const generateUserToken = async (id: number, token: string) => {
+  const user = await getUserById(id);
+  if (user) {
+    await db.update(users).set({ token }).where(eq(users.id, id));
+  }
+};

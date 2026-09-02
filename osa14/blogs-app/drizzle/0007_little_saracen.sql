@@ -1,0 +1,1 @@
+ALTER TABLE "reading_list_entries" DROP COLUMN "name";

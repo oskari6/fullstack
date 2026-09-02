@@ -1,10 +1,13 @@
 "use server";
 
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { db } from "../../db";
 import { users } from "../../db/schema";
-import { redirect } from "next/navigation";
+import { generateUserToken } from "../services/users";
 
 type FormState = {
   error: string;
@@ -59,4 +62,11 @@ export const registerUser = async (
   await db.insert(users).values({ username, name, passwordHash });
 
   redirect("/login");
+};
+
+export const generateToken = async (id: number) => {
+  const token = crypto.randomBytes(32).toString("hex");
+
+  await generateUserToken(id, token);
+  revalidatePath("/me");
 };

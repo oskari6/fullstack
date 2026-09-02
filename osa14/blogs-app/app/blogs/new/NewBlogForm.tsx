@@ -71,7 +71,11 @@ export const NewBlogForm = () => {
           <p style={{ color: "red" }}>{state.error}</p>
         )}
       </div>
-      <button className="bg-blue-200 border-1" type="submit">
+      <button
+        data-testid="create-blog-button"
+        className="bg-blue-200 border-1"
+        type="submit"
+      >
         Create
       </button>
     </form>

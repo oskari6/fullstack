@@ -15,5 +15,9 @@ export default function Notification() {
     backgroundColor: type === "success" ? "#16a34a" : "#dc2626",
   };
 
-  return <div style={style}>{message}</div>;
+  return (
+    <div data-testid="notification" style={style}>
+      {message}
+    </div>
+  );
 }

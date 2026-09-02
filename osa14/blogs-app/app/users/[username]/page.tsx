@@ -15,9 +15,9 @@ const UserPage = async ({
   }
 
   return (
-    <div>
-      <h2>{user.name}</h2>
-      <p>Username: {user.username}</p>
+    <div data-testid="user-profile">
+      <h2 data-testid="user-name">{user.name}</h2>
+      <p data-testid="user-username">Username: {user.username}</p>
       <h3>Blogs</h3>
       <ul>
         {user.blogs.map((blog) => (
