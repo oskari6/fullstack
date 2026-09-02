@@ -22,7 +22,7 @@ export const NewBlogForm = () => {
       showNotification("note created");
       router.push("/blogs");
     }
-  }, [state, showNotification, router]);
+  }, [state.success, showNotification, router]);
 
   return (
     <form action={formAction}>
