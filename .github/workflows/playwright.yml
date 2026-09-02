@@ -58,6 +58,8 @@ jobs:
         run: npx drizzle-kit push
 
       - name: Run Playwright tests
+        env:
+          NODE_ENV: test
         working-directory: ./osa14/blogs-app
         run: npx playwright test
 
