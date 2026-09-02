@@ -1,4 +1,8 @@
-import Link from "next/link";
+import NavBar from "./components/NavBar";
+import Notification from "./components/Notification";
+import { NotificationProvider } from "./components/NotificationContext";
+import AuthSessionProvider from "./components/SessionProvider";
+import "./globals.css";
 
 export default function RootLayout({
   children,
@@ -7,15 +11,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <nav>
-          <Link href="/">home</Link>
-          {" | "}
-          <Link href="/blogs">blogs</Link>
-          {" | "}
-          <Link href="/blogs/new">create new</Link>
-        </nav>
-        {children}
+      <body className="min-h-screen bg-background text-foreground">
+        <AuthSessionProvider>
+          <NotificationProvider>
+            <NavBar />
+            <Notification />
+            {children}
+          </NotificationProvider>
+        </AuthSessionProvider>
       </body>
     </html>
   );

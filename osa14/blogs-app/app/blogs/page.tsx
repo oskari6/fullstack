@@ -7,7 +7,7 @@ const Blogs = async ({
   searchParams: Promise<{ filter?: string }>;
 }) => {
   const { filter } = await searchParams;
-  const blogs = getBlogs();
+  const blogs = await getBlogs();
 
   const filteredBlogs = filter
     ? blogs.filter((blog) =>
@@ -16,16 +16,22 @@ const Blogs = async ({
     : blogs;
 
   return (
-    <div>
-      <h2>Blogs</h2>
-      <form action="/blogs" method="get">
+    <div className="max-w-2xl mx-auto p-6">
+      <h2 className="text-2xl font-bold mb-4">Blogs</h2>
+      <form action="/blogs" method="get" className="mb-4">
         <input name="filter" placeholder="search" defaultValue={filter ?? ""} />
         <button type="submit">search</button>
       </form>
-      <ul>
+      <ul className="space-y-2">
         {filteredBlogs.map((blog) => (
-          <li key={blog.id} style={{ gap: 5, display: "flex" }}>
-            <Link href={`/blogs/${blog.id}`}>
+          <li
+            key={blog.id}
+            className="border rounded p-3 hover:bg-gray-50 flex gap-2"
+          >
+            <Link
+              href={`/blogs/${blog.id}`}
+              className="text-blue-600 hover:underline"
+            >
               <span>{blog.title}</span>
             </Link>
             <span>{blog.author}</span>
