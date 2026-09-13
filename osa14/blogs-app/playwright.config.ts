@@ -1,6 +1,13 @@
 import { defineConfig, devices } from "@playwright/test";
+import * as dotenv from "dotenv";
+
+console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log("DATABASE_URL exists:", !!process.env.DATABASE_URL);
 
 const baseURL = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+if (process.env.NODE_ENV === "test") {
+  dotenv.config({ path: ".env.test" });
+}
 
 export default defineConfig({
   testDir: "./tests",
@@ -21,7 +28,7 @@ export default defineConfig({
   webServer: {
     command: "npm run dev",
     url: baseURL,
-    reuseExistingServer: true,
+    reuseExistingServer: process.env.NODE_ENV !== "test",
     timeout: 120_000,
   },
 });

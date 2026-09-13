@@ -1,12 +1,10 @@
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
 import { NewBlogForm } from "./NewBlogForm";
 
 const NewBlog = async () => {
-  const session = await auth();
-  if (!session) {
-    redirect("/login");
-  }
+  // const session = await auth();
+  // if (!session) {
+  //   redirect("/login");
+  // }
 
   return (
     <div>

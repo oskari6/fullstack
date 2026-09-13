@@ -69,4 +69,5 @@ export const generateToken = async (id: number) => {
 
   await generateUserToken(id, token);
   revalidatePath("/me");
+  return token;
 };
