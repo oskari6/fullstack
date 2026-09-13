@@ -4,8 +4,7 @@ osa11:
 pokedex: osa11/pokedex
 exercise 21: osa3/ projektista. osa11-ex21-pipeline.yml
 
-this is a test comment for pr
-.
+this is a test
 
 osa12 22 ja 23:
 ./osa12/my-app
