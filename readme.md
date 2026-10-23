@@ -1,19 +1,4 @@
 osoite: https://backend-red-night-8510.fly.dev/
-
-pokedex: /pokedex
-exercise 21: osa3 projektista. osa11-ex21-pipeline.yml
-
-osa12 22 ja 23:
-./osa12/my-app
-
-osa10:
-./osa10/rate-repository-app/
-
-# Rate Repository App
-
-A mobile application for rating GitHub repositories. Users can browse GitHub-style repositories, view individual repository details and reviews, and create new reviews when signed in. The app is built with React Native and Expo, and it uses a GraphQL API as its backend. Created as part of Full Stack Open, part 10.
-
-## Try the App on Your Phone
-
-You can try the app on your phone by scanning the following QR code with Expo Go:
-![alt text](/osa10/rate-repository-app/image.png)
+pokedex deployed link: https://fs-pokedex-ancient-starlight-8495.fly.dev/
+app repository from 2 previous exercies is this same repository with osa3 backend and frontend moved to root level. Other parts of the full stack course is in other parts/ folder.
+.
