@@ -13,12 +13,14 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
+          cache: npm
+          cache-dependency-path: fs-pokedex/package-lock.json
       - name: Install dependencies
         working-directory: ./fs-pokedex
         run: npm ci
       - name: Install Playwright Browsers
         working-directory: ./fs-pokedex
-        run: npx playwright install --with-deps
+        run: npx playwright install chromium --with-deps
       - name: Run Playwright tests
         working-directory: ./fs-pokedex
         run: npx playwright test
