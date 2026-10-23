@@ -17,31 +17,31 @@ jobs:
         with:
           node-version: "24"
       - name: Install backend dependencies
-        working-directory: ./osa3/backend
+        working-directory: ./backend
         run: npm install
 
       - name: Install frontend dependencies
-        working-directory: ./osa3/frontend
+        working-directory: ./frontend
         run: npm install
 
       - name: Check backend style
-        working-directory: ./osa3/backend
+        working-directory: ./backend
         run: npm run lint
 
       - name: Check frontend style
-        working-directory: ./osa3/frontend
+        working-directory: ./frontend
         run: npm run lint
 
       - name: Build application
-        working-directory: ./osa3/backend
+        working-directory: ./backend
         run: npm run build:ui
 
       - name: Start backend
-        working-directory: ./osa3/backend
+        working-directory: ./backend
         run: npm run dev > backend.log 2>&1 &
 
       - name: Start frontend
-        working-directory: ./osa3/frontend
+        working-directory: ./frontend
         run: npm start -- --host 0.0.0.0 > frontend.log 2>&1 &
 
       - name: Check backend health
@@ -72,7 +72,7 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy to Fly.io
-        working-directory: ./osa3/backend
+        working-directory: ./backend
         run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_2 }}
